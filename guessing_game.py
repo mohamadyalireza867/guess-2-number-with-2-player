@@ -1,47 +1,46 @@
 import random
 
-def play_game():
-    """Main game logic for two players guessing one secret number."""
-    dealer_number = random.randint(0, 10)
-    p1_tries = 0
-    p2_tries = 0
-    game_over = False
+# Dealer generates ONE random number for the whole game
+dealer_number = random.randint(0, 10)
 
-    print("--- Welcome to the Dealer Guessing Game ---")
-    print("The Dealer has chosen a number between 0 and 10.")
+player1_tries = 0
+player2_tries = 0
+found = False
 
-    while not game_over:
-        # Player 1's Turn
-        p1_guess = int(input("Player 1: "))
-        p1_tries += 1
-        if p1_guess < dealer_number:
-            print("Try a greater number.")
-        elif p1_guess > dealer_number:
-            print("Try a smaller number.")
-        else:
-            print(f"That’s right Player 1! Number of tries: {p1_tries}")
-            game_over = True
-            break # Game ends immediately
+print("Dealer has chosen a number between 0 and 10!")
 
-        # Player 2's Turn
-        p2_guess = int(input("Player 2: "))
-        p2_tries += 1
-        if p2_guess < dealer_number:
-            print("Try a greater number.")
-        elif p2_guess > dealer_number:
-            print("Try a smaller number.")
-        else:
-            print(f"That’s right Player 2! Number of tries: {p2_tries}")
-            game_over = True
-
-    # Comparison Logic
-    print("\n--- Final Results ---")
-    if p1_tries < p2_tries:
-        print(f"Player 1 wins! (Tries: {p1_tries} vs {p2_tries})")
-    elif p2_tries < p1_tries:
-        print(f"Player 2 wins! (Tries: {p2_tries} vs {p1_tries})")
+while not found:
+    # Player 1's Turn
+    p1_guess = int(input("Player 1: "))
+    player1_tries += 1
+    if p1_guess < dealer_number:
+        print("Try a greater number.")
+    elif p1_guess > dealer_number:
+        print("Try a smaller number.")
     else:
-        print(f"It's a tie! Both took {p1_tries} tries.")
+        print(f"That’s right Player 1! Number of tries: {player1_tries}")
+        found = True
+        break # Exit the loop immediately
+        
+    # Player 2's Turn
+    p2_guess = int(input("Player 2: "))
+    player2_tries += 1
+    if p2_guess < dealer_number:
+        print("Try a greater number.")
+    elif p2_guess > dealer_number:
+        print("Try a smaller number.")
+    else:
+        print(f"That’s right Player 2! Number of tries: {player2_tries}")
+        found = True
+        break # Exit the loop immediately
 
-if __name__ == "__main__":
-    play_game()
+# Determine the winner based on total tries
+print("\n--- FINAL RESULT ---")
+if player1_tries < player2_tries:
+    print("Player 1 wins! (Fewer tries)")
+elif player2_tries < player1_tries:
+    print("Player 2 wins! (Fewer tries)")
+else:
+    # This happens if Player 2 guesses it on the same round number as Player 1 
+    # OR if Player 1 gets it on the first try before Player 2 even goes.
+    print("It's a tie or the first player found it immediately!")
